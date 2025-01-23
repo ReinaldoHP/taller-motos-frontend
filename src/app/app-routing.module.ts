@@ -7,12 +7,12 @@ import { CrearProductoComponent } from './components/crear-producto/crear-produc
 export const routes: Routes = [
   { path: 'productos', component: ProductoComponent },
   { path: '', redirectTo: '/productos', pathMatch: 'full' },
-  { path: 'crear-producto', component: CrearProductoComponent },
+  { path: 'productos/crear', component: CrearProductoComponent },
   { path: 'productos/:id', component: DetalleProductoComponent },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  imports: [RouterModule.forRoot(routes)], // Definir rutas en el RouterModule
+  exports: [RouterModule], // Exportar para que estén disponibles en toda la aplicación
 })
 export class AppRoutingModule {}

@@ -1,0 +1,87 @@
+<div *ngIf="isLoading">Cargando...</div>
+
+<div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+<div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+<form (ngSubmit)="crearProducto()" #productoForm="ngForm">
+  <div>
+    <label for="nombre">Nombre</label>
+    <input
+      id="nombre"
+      [(ngModel)]="producto.nombre"
+      name="nombre"
+      required
+      #nombre="ngModel"
+      class="form-control"
+    />
+    <div *ngIf="nombre.invalid && nombre.touched">
+      <small class="text-danger">El nombre es obligatorio.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="descripcion">Descripción</label>
+    <input
+      id="descripcion"
+      [(ngModel)]="producto.descripcion"
+      name="descripcion"
+      required
+      #descripcion="ngModel"
+      class="form-control"
+    />
+    <div *ngIf="descripcion.invalid && descripcion.touched">
+      <small class="text-danger">La descripción es obligatoria.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="precio">Precio</label>
+    <input
+      id="precio"
+      [(ngModel)]="producto.precio"
+      name="precio"
+      type="number"
+      required
+      #precio="ngModel"
+      class="form-control"
+    />
+    <div *ngIf="precio.invalid && precio.touched">
+      <small class="text-danger">El precio es obligatorio.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="cantidad">Cantidad</label>
+    <input
+      id="cantidad"
+      [(ngModel)]="producto.cantidad"
+      name="cantidad"
+      type="number"
+      required
+      #cantidad="ngModel"
+      class="form-control"
+    />
+    <div *ngIf="cantidad.invalid && cantidad.touched">
+      <small class="text-danger">La cantidad es obligatoria.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="codigo_barra">Código de Barra</label>
+    <input
+      id="codigo_barra"
+      [(ngModel)]="producto.codigo_barra"
+      name="codigo_barra"
+      required
+      #codigo_barra="ngModel"
+      class="form-control"
+    />
+    <div *ngIf="codigo_barra.invalid && codigo_barra.touched">
+      <small class="text-danger">El código de barra es obligatorio.</small>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="productoForm.invalid || isLoading" class="btn btn-primary">
+    Crear Producto
+  </button>
+</form>
