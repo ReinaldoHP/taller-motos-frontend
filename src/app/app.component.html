@@ -1,18 +1,23 @@
-<header>
-  <h1>Bienvenido a Taller de Motos</h1>
+<header class="text-center">
+  <h1>Bienvenido a Taller de Motos Reinaldo</h1>
   <nav>
-    <ul>
-      <!-- Enlaces de navegación utilizando routerLink -->
-      <li><a routerLink="/" routerLinkActive="active">Inicio</a></li>
-      <li><a routerLink="/productos" routerLinkActive="active">Productos</a></li>
-      <li><a routerLink="/crear-producto" routerLinkActive="active">Crear Producto</a></li> <!-- Nuevo enlace para Crear Producto -->
+    <ul class="nav justify-content-center">
+      <li class="nav-item">
+        <a routerLink="/" routerLinkActive="active" class="nav-link">Inicio</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/productos" routerLinkActive="active" class="nav-link">Productos</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/crear-producto" routerLinkActive="active" class="nav-link">Crear Producto</a>
+      </li>
     </ul>
   </nav>
 </header>
 
-<!-- Aquí se renderizan los componentes según las rutas -->
+<!-- El contenido de las rutas se inyectará aquí -->
 <router-outlet></router-outlet>
 
-<footer>
+<footer class="text-center mt-4">
   <p>© 2025 Taller de Motos. Todos los derechos reservados.</p>
 </footer>

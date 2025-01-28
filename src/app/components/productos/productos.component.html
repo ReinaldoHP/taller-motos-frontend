@@ -1,46 +1,50 @@
-<h1 class="my-4">Gestión de Productos</h1>
+<div class="container mt-4">
+  <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white text-center">
+      <h4>Lista de Productos</h4>
+    </div>
+    <div class="card-body">
+      <table *ngIf="!isLoading && productos.length > 0" class="table table-hover table-bordered text-center">
+        <thead class="table-dark">
+          <tr>
+            <th>#</th> <!-- Nueva columna para el índice -->
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Código de Barra</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let producto of productos; let i = index"> <!-- Usa 'let i = index' -->
+            <td>{{ i + 1 }}</td> <!-- Muestra el índice + 1 -->
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.descripcion }}</td>
+            <td>{{ producto.cantidad }}</td>
+            <td>{{ producto.precio | currency:'USD' }}</td>
+            <td>{{ producto.codigo_barra }}</td>
+            <td>
+              <button
+                (click)="updateProducto(producto.id)"
+                class="btn btn-warning btn-sm me-2"
+              >
+                Actualizar
+              </button>
+              <button
+                (click)="deleteProducto(producto.id)"
+                class="btn btn-danger btn-sm"
+              >
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-<!-- Estado de carga -->
-<div *ngIf="isLoading" class="loading text-center">
-  <div class="spinner-border text-primary" role="status">
-    <span class="visually-hidden">Cargando...</span>
+      <div *ngIf="productos.length === 0 && !isLoading" class="text-center my-4">
+        <p class="text-muted">No se encontraron productos.</p>
+      </div>
+    </div>
   </div>
-  <p>Cargando...</p>
 </div>
-
-<!-- Mensaje de error -->
-<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
-  {{ errorMessage }}
-</div>
-
-<!-- Tabla de productos -->
-<table *ngIf="!isLoading && !errorMessage" class="table table-bordered table-striped">
-  <thead class="thead-dark">
-    <tr>
-      <th>Nombre</th>
-      <th>Descripción</th>
-      <th>Cantidad</th>
-      <th>Precio</th>
-      <th>Código de Barra</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <!-- Iterar sobre los productos -->
-    <tr *ngFor="let producto of productos">
-      <td><a [routerLink]="['/productos', producto.id]">{{ producto.nombre }}</a></td>
-      <td>{{ producto.descripcion }}</td>
-      <td>{{ producto.cantidad }}</td>
-      <td>${{ producto.precio }}</td>
-      <td>{{ producto.codigo_barra }}</td>
-      <td>
-        <button class="btn btn-danger" (click)="deleteProducto(producto.id)">Eliminar</button>
-      </td>
-    </tr>
-
-    <!-- Mensaje si no hay productos -->
-    <tr *ngIf="productos.length === 0">
-      <td colspan="6" class="text-center">No hay productos disponibles.</td>
-    </tr>
-  </tbody>
-</table>

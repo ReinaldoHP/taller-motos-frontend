@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductoService } from '../../services/producto.service'; // ProductoService sigue siendo usado aquí
-import { Producto } from '../../models/producto.model';
-import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Producto } from '../../models/producto.model';
+import { ProductoService } from '../../services/producto.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-producto',
-  imports: [RouterModule, CommonModule],
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './productos.component.html',
   styleUrls: ['./productos.component.css'],
 })
@@ -15,41 +15,64 @@ export class ProductoComponent implements OnInit {
   productos: Producto[] = [];
   isLoading: boolean = false;
   errorMessage: string = '';
+  successMessage: string = '';
 
-  constructor(private productoService: ProductoService) {}
+  constructor(
+    private productoService: ProductoService,
+    private router: Router // Inyectamos el servicio de Router para navegar
+  ) {}
 
-  // Cargar productos al iniciar el componente
   ngOnInit(): void {
     this.loadProductos();
   }
 
-  // Función para cargar los productos desde el servicio
+  // Cargar la lista de productos desde el servicio
   loadProductos(): void {
-    this.isLoading = true; // Indicamos que está cargando
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.successMessage = '';
     this.productoService.getProductos().subscribe(
-      (data) => {
-        this.productos = data; // Asignamos los datos obtenidos a la variable productos
-        this.isLoading = false; // Indicamos que ya no está cargando
+      (data: Producto[]) => {
+        this.productos = data;
+        this.isLoading = false;
       },
       (error) => {
-        this.errorMessage = 'Error al cargar los productos'; // Mensaje de error si la solicitud falla
-        this.isLoading = false; // Indicamos que ya no está cargando
+        this.errorMessage =
+          'Error al cargar los productos. Inténtalo más tarde.';
+        this.isLoading = false;
       }
     );
   }
 
-  // Eliminar un producto
+  // Eliminar un producto con confirmación
   deleteProducto(id: string): void {
-    this.productoService.deleteProducto(id).subscribe(
-      () => {
-        // Filtrar el producto eliminado de la lista
-        this.productos = this.productos.filter(
-          (producto) => producto.id !== id
-        );
-      },
-      (error) => {
-        console.error('Error al eliminar producto:', error);
-      }
-    );
+    if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+      this.productoService.deleteProducto(id).subscribe(
+        () => {
+          this.productos = this.productos.filter(
+            (producto) => producto.id !== id
+          );
+          this.successMessage = 'Producto eliminado correctamente.';
+          this.clearMessagesAfterTimeout();
+        },
+        (error) => {
+          this.errorMessage = 'Error al eliminar el producto.';
+          this.clearMessagesAfterTimeout();
+        }
+      );
+    }
+  }
+
+  // Redirigir al formulario de actualización con el ID del producto
+  updateProducto(id: string): void {
+    this.router.navigate(['/actualizar-producto', id]);
+  }
+
+  // Limpiar mensajes después de un tiempo
+  private clearMessagesAfterTimeout(): void {
+    setTimeout(() => {
+      this.errorMessage = '';
+      this.successMessage = '';
+    }, 3000); // 3 segundos
   }
 }

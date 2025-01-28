@@ -1,0 +1,41 @@
+/* editar-producto.component.css */
+.loading-indicator {
+  text-align: center;
+  font-size: 1.5em;
+  color: #007bff;
+}
+
+.error-message {
+  color: red;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.success-message {
+  color: green;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.form-group {
+  margin-bottom: 1em;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.5em;
+  margin: 0.5em 0;
+}
+
+.btn {
+  padding: 0.7em;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

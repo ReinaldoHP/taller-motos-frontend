@@ -31,7 +31,7 @@ export class DetalleProductoComponent implements OnInit {
     this.isLoading = true; // Inicia el estado de carga
     this.errorMessage = null; // Reinicia el mensaje de error
 
-    this.productoService.getProducto(id).subscribe(
+    this.productoService.getProductoById(id).subscribe(
       (data) => {
         this.producto = data;
         this.isLoading = false; // Finaliza el estado de carga

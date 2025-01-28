@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from './api.service'; // Importamos ApiService
+import { ApiService } from './api.service';
 import { Producto } from '../models/producto.model';
 import { Observable } from 'rxjs';
 
@@ -16,8 +16,8 @@ export class ProductoService {
     return this.apiService.get<Producto[]>(this.endpoint); // Delegamos la solicitud a ApiService
   }
 
-  // Obtener un producto por ID
-  getProducto(id: string): Observable<Producto> {
+  // Obtener un producto por su ID
+  getProductoById(id: string): Observable<Producto> {
     return this.apiService.get<Producto>(`${this.endpoint}/${id}`); // Delegamos la solicitud a ApiService
   }
 

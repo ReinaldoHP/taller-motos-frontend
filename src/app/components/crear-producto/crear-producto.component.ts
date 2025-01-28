@@ -15,11 +15,25 @@ export class CrearProductoComponent {
     cantidad: 0,
     codigo_barra: '',
   };
-isLoading: boolean | null | undefined;
-successMessage: any;
-errorMessage: any;
 
+  isLoading: boolean = false; // Inicializar como false para evitar undefined
+  successMessage: string | null = null; // Inicializar como null
+  errorMessage: string | null = null; // Inicializar como null
+
+  // Función que se ejecuta cuando se envía el formulario
   crearProducto() {
-    console.log('Producto creado:', this.producto);
+    this.isLoading = true; // Se activa el estado de carga
+
+    // Simulando un retraso de la API o lógica de negocio
+    setTimeout(() => {
+      this.isLoading = false; // Desactivar el estado de carga
+      // Simular respuesta exitosa
+      this.successMessage = 'Producto creado con éxito';
+      // Simular error en caso de fallo
+      // this.errorMessage = 'Hubo un error al crear el producto';
+
+      // Mostrar el producto que se ha creado en la consola
+      console.log('Producto creado:', this.producto);
+    }, 2000);
   }
 }

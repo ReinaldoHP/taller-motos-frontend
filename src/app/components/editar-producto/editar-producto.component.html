@@ -1,0 +1,48 @@
+<div *ngIf="isLoading" class="spinner">Cargando...</div>
+
+<form [formGroup]="productoForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+  <div>
+    <label for="nombre">Nombre:</label>
+    <input id="nombre" formControlName="nombre" type="text" />
+    <div *ngIf="productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched">
+      <small class="error">El nombre es obligatorio.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="descripcion">Descripción:</label>
+    <textarea id="descripcion" formControlName="descripcion"></textarea>
+    <div *ngIf="productoForm.get('descripcion')?.invalid && productoForm.get('descripcion')?.touched">
+      <small class="error">La descripción es obligatoria.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="precio">Precio:</label>
+    <input id="precio" formControlName="precio" type="number" />
+    <div *ngIf="productoForm.get('precio')?.invalid && productoForm.get('precio')?.touched">
+      <small class="error">El precio debe ser mayor o igual a 0.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="cantidad">Cantidad:</label>
+    <input id="cantidad" formControlName="cantidad" type="number" />
+    <div *ngIf="productoForm.get('cantidad')?.invalid && productoForm.get('cantidad')?.touched">
+      <small class="error">La cantidad debe ser mayor o igual a 1.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="codigo_barra">Código de Barra:</label>
+    <input id="codigo_barra" formControlName="codigo_barra" type="text" />
+    <div *ngIf="productoForm.get('codigo_barra')?.invalid && productoForm.get('codigo_barra')?.touched">
+      <small class="error">El código de barra es obligatorio.</small>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="productoForm.invalid">Guardar cambios</button>
+</form>
+
+<div *ngIf="successMessage" class="success">{{ successMessage }}</div>
+<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
