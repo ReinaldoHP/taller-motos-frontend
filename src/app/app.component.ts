@@ -5,11 +5,10 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterModule], // Asegúrate de incluir los módulos aquí
+  imports: [CommonModule, RouterModule, RouterOutlet], // Asegurando que RouterModule esté correctamente importado
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  template: `<router-outlet></router-outlet>`,
 })
 export class AppComponent {
-  title = 'productos';
+  title = 'Taller de Motos Reinaldo';  // Título de la aplicación, se puede mostrar en el HTML
 }

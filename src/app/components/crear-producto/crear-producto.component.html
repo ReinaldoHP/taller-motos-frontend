@@ -1,115 +1,80 @@
-<div *ngIf="isLoading" class="text-center my-4">
-  <div class="spinner-border text-primary" role="status">
-    <span class="sr-only">Cargando...</span>
+<div class="container mt-4">
+  <h2>Crear Nuevo Producto</h2>
+
+  <!-- Mensaje de éxito -->
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
   </div>
-</div>
 
-<div *ngIf="successMessage" class="alert alert-success text-center my-4">
-  {{ successMessage }}
-</div>
-<div *ngIf="errorMessage" class="alert alert-danger text-center my-4">
-  {{ errorMessage }}
-</div>
-
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-  <div class="card shadow-lg w-100" style="max-width: 600px;">
-    <div class="card-header bg-primary text-white text-center">
-      <h4>Crear Producto</h4>
-    </div>
-    <div class="card-body">
-      <form (ngSubmit)="crearProducto()" #productoForm="ngForm">
-        <div class="mb-3">
-          <label for="nombre" class="form-label">Nombre</label>
-          <input
-            id="nombre"
-            [(ngModel)]="producto.nombre"
-            name="nombre"
-            required
-            #nombre="ngModel"
-            class="form-control"
-            placeholder="Ingrese el nombre del producto"
-          />
-          <div *ngIf="nombre.invalid && nombre.touched" class="text-danger mt-1">
-            El nombre es obligatorio.
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label for="descripcion" class="form-label">Descripción</label>
-          <input
-            id="descripcion"
-            [(ngModel)]="producto.descripcion"
-            name="descripcion"
-            required
-            #descripcion="ngModel"
-            class="form-control"
-            placeholder="Ingrese la descripción del producto"
-          />
-          <div *ngIf="descripcion.invalid && descripcion.touched" class="text-danger mt-1">
-            La descripción es obligatoria.
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label for="precio" class="form-label">Precio</label>
-          <input
-            id="precio"
-            [(ngModel)]="producto.precio"
-            name="precio"
-            type="number"
-            required
-            #precio="ngModel"
-            class="form-control"
-            placeholder="Ingrese el precio del producto"
-          />
-          <div *ngIf="precio.invalid && precio.touched" class="text-danger mt-1">
-            El precio es obligatorio.
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label for="cantidad" class="form-label">Cantidad</label>
-          <input
-            id="cantidad"
-            [(ngModel)]="producto.cantidad"
-            name="cantidad"
-            type="number"
-            required
-            #cantidad="ngModel"
-            class="form-control"
-            placeholder="Ingrese la cantidad disponible"
-          />
-          <div *ngIf="cantidad.invalid && cantidad.touched" class="text-danger mt-1">
-            La cantidad es obligatoria.
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label for="codigo_barra" class="form-label">Código de Barra</label>
-          <input
-            id="codigo_barra"
-            [(ngModel)]="producto.codigo_barra"
-            name="codigo_barra"
-            required
-            #codigo_barra="ngModel"
-            class="form-control"
-            placeholder="Ingrese el código de barra del producto"
-          />
-          <div *ngIf="codigo_barra.invalid && codigo_barra.touched" class="text-danger mt-1">
-            El código de barra es obligatorio.
-          </div>
-        </div>
-
-        <div class="text-center">
-          <button
-            type="submit"
-            [disabled]="productoForm.invalid || isLoading"
-            class="btn btn-primary w-100"
-          >
-            {{ isLoading ? 'Cargando...' : 'Crear Producto' }}
-          </button>
-        </div>
-      </form>
-    </div>
+  <!-- Mensaje de error -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
   </div>
+
+  <!-- Formulario de creación del producto -->
+  <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input
+        type="text"
+        class="form-control"
+        id="nombre"
+        formControlName="nombre"
+        placeholder="Nombre del producto"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="descripcion">Descripción</label>
+      <textarea
+        class="form-control"
+        id="descripcion"
+        formControlName="descripcion"
+        placeholder="Descripción del producto"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="precio">Precio</label>
+      <input
+        type="number"
+        class="form-control"
+        id="precio"
+        formControlName="precio"
+        placeholder="Precio del producto"
+        min="0"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="cantidad">Cantidad</label>
+      <input
+        type="number"
+        class="form-control"
+        id="cantidad"
+        formControlName="cantidad"
+        placeholder="Cantidad disponible"
+        min="1"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="codigo_barra">Código de Barra</label>
+      <input
+        type="text"
+        class="form-control"
+        id="codigo_barra"
+        formControlName="codigo_barra"
+        placeholder="Código de barra del producto"
+      />
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="productoForm.invalid || isLoading"
+    >
+      {{ isLoading ? 'Guardando...' : 'Crear Producto' }}
+    </button>
+  </form>
 </div>

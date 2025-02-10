@@ -4,10 +4,11 @@
       <h4>Lista de Productos</h4>
     </div>
     <div class="card-body">
+      <!-- Tabla de productos -->
       <table *ngIf="!isLoading && productos.length > 0" class="table table-hover table-bordered text-center">
         <thead class="table-dark">
           <tr>
-            <th>#</th> <!-- Nueva columna para el índice -->
+            <th>#</th>
             <th>Nombre</th>
             <th>Descripción</th>
             <th>Cantidad</th>
@@ -17,8 +18,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let producto of productos; let i = index"> <!-- Usa 'let i = index' -->
-            <td>{{ i + 1 }}</td> <!-- Muestra el índice + 1 -->
+          <tr *ngFor="let producto of productos; let i = index">
+            <td>{{ i + 1 }}</td>
             <td>{{ producto.nombre }}</td>
             <td>{{ producto.descripcion }}</td>
             <td>{{ producto.cantidad }}</td>
@@ -37,11 +38,18 @@
               >
                 Eliminar
               </button>
+              <button
+                (click)="updateProducto(producto.id)"
+                class="btn btn-info btn-sm ms-2"
+              >
+                Ver Detalles
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
 
+      <!-- Mensaje si no hay productos -->
       <div *ngIf="productos.length === 0 && !isLoading" class="text-center my-4">
         <p class="text-muted">No se encontraron productos.</p>
       </div>

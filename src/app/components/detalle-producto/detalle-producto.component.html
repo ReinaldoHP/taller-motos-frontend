@@ -1,18 +1,11 @@
-<!-- Estado de carga -->
-<div *ngIf="isLoading" class="loading" aria-live="polite">
-  <p>Cargando...</p>
+<div *ngIf="producto">
+  <h2>{{ producto.nombre }}</h2>
+  <p>{{ producto.descripcion }}</p>
+  <p>Precio: {{ producto.precio }}</p>
+  <p>Cantidad: {{ producto.cantidad }}</p>
+  <p>Código de barra: {{ producto.codigo_barra }}</p>
 </div>
 
-<!-- Mensaje de error -->
-<div *ngIf="errorMessage" class="error" role="alert" aria-live="assertive">
-  <p>{{ errorMessage }}</p>
-</div>
+<div *ngIf="isLoading">Cargando...</div>
+<div *ngIf="errorMessage">{{ errorMessage }}</div>
 
-<!-- Detalles del producto -->
-<div *ngIf="producto && !isLoading && !errorMessage" class="producto-detalle">
-  <h2>{{ producto?.nombre }}</h2>
-  <p><strong>Descripción:</strong> {{ producto?.descripcion }}</p>
-  <p><strong>Cantidad:</strong> {{ producto?.cantidad }}</p>
-  <p><strong>Precio:</strong> ${{ producto?.precio }}</p>
-  <p><strong>Código de barra:</strong> {{ producto?.codigo_barra }}</p>
-</div>

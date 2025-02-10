@@ -1,48 +1,97 @@
-<div *ngIf="isLoading" class="spinner">Cargando...</div>
+<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center vh-100">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+</div>
 
-<form [formGroup]="productoForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
-  <div>
-    <label for="nombre">Nombre:</label>
-    <input id="nombre" formControlName="nombre" type="text" />
-    <div *ngIf="productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched">
-      <small class="error">El nombre es obligatorio.</small>
+<div class="container mt-5" *ngIf="!isLoading">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg">
+        <div class="card-body">
+          <h2 class="text-center mb-4">Editar Producto</h2>
+          <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+            <!-- Nombre -->
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre:</label>
+              <input
+                id="nombre"
+                formControlName="nombre"
+                type="text"
+                class="form-control"
+                [ngClass]="{'is-invalid': productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched}"
+              />
+              <div class="invalid-feedback">El nombre es obligatorio.</div>
+            </div>
+
+            <!-- Descripción -->
+            <div class="mb-3">
+              <label for="descripcion" class="form-label">Descripción:</label>
+              <textarea
+                id="descripcion"
+                formControlName="descripcion"
+                class="form-control"
+                [ngClass]="{'is-invalid': productoForm.get('descripcion')?.invalid && productoForm.get('descripcion')?.touched}"
+              ></textarea>
+              <div class="invalid-feedback">La descripción es obligatoria.</div>
+            </div>
+
+            <!-- Precio -->
+            <div class="mb-3">
+              <label for="precio" class="form-label">Precio:</label>
+              <input
+                id="precio"
+                formControlName="precio"
+                type="number"
+                class="form-control"
+                [ngClass]="{'is-invalid': productoForm.get('precio')?.invalid && productoForm.get('precio')?.touched}"
+              />
+              <div class="invalid-feedback">El precio debe ser mayor o igual a 0.</div>
+            </div>
+
+            <!-- Cantidad -->
+            <div class="mb-3">
+              <label for="cantidad" class="form-label">Cantidad:</label>
+              <input
+                id="cantidad"
+                formControlName="cantidad"
+                type="number"
+                class="form-control"
+                [ngClass]="{'is-invalid': productoForm.get('cantidad')?.invalid && productoForm.get('cantidad')?.touched}"
+              />
+              <div class="invalid-feedback">La cantidad debe ser mayor o igual a 1.</div>
+            </div>
+
+            <!-- Código de Barra -->
+            <div class="mb-3">
+              <label for="codigo_barra" class="form-label">Código de Barra:</label>
+              <input
+                id="codigo_barra"
+                formControlName="codigo_barra"
+                type="text"
+                class="form-control"
+                [ngClass]="{'is-invalid': productoForm.get('codigo_barra')?.invalid && productoForm.get('codigo_barra')?.touched}"
+              />
+              <div class="invalid-feedback">El código de barra es obligatorio.</div>
+            </div>
+
+            <!-- Botón -->
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary w-100" [disabled]="productoForm.invalid">
+                Guardar cambios
+              </button>
+            </div>
+          </form>
+
+          <!-- Mensajes -->
+          <div *ngIf="successMessage" class="alert alert-success mt-3">
+            {{ successMessage }}
+          </div>
+          <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+            {{ errorMessage }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div>
-    <label for="descripcion">Descripción:</label>
-    <textarea id="descripcion" formControlName="descripcion"></textarea>
-    <div *ngIf="productoForm.get('descripcion')?.invalid && productoForm.get('descripcion')?.touched">
-      <small class="error">La descripción es obligatoria.</small>
-    </div>
-  </div>
-
-  <div>
-    <label for="precio">Precio:</label>
-    <input id="precio" formControlName="precio" type="number" />
-    <div *ngIf="productoForm.get('precio')?.invalid && productoForm.get('precio')?.touched">
-      <small class="error">El precio debe ser mayor o igual a 0.</small>
-    </div>
-  </div>
-
-  <div>
-    <label for="cantidad">Cantidad:</label>
-    <input id="cantidad" formControlName="cantidad" type="number" />
-    <div *ngIf="productoForm.get('cantidad')?.invalid && productoForm.get('cantidad')?.touched">
-      <small class="error">La cantidad debe ser mayor o igual a 1.</small>
-    </div>
-  </div>
-
-  <div>
-    <label for="codigo_barra">Código de Barra:</label>
-    <input id="codigo_barra" formControlName="codigo_barra" type="text" />
-    <div *ngIf="productoForm.get('codigo_barra')?.invalid && productoForm.get('codigo_barra')?.touched">
-      <small class="error">El código de barra es obligatorio.</small>
-    </div>
-  </div>
-
-  <button type="submit" [disabled]="productoForm.invalid">Guardar cambios</button>
-</form>
-
-<div *ngIf="successMessage" class="success">{{ successMessage }}</div>
-<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+</div>

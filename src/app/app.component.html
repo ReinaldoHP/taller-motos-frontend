@@ -1,23 +1,41 @@
-<header class="text-center">
-  <h1>Bienvenido a Taller de Motos Reinaldo</h1>
-  <nav>
-    <ul class="nav justify-content-center">
-      <li class="nav-item">
-        <a routerLink="/" routerLinkActive="active" class="nav-link">Inicio</a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="/productos" routerLinkActive="active" class="nav-link">Productos</a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="/crear-producto" routerLinkActive="active" class="nav-link">Crear Producto</a>
-      </li>
-    </ul>
+<!-- app.component.html -->
+<div class="container-fluid">
+  <!-- Barra de navegación con Bootstrap -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Taller de Motos Reinaldo</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/productos">
+            <i class="fas fa-motorcycle"></i> Productos
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/crear-producto">
+            <i class="fas fa-plus-circle"></i> Crear Producto
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/usuarios">
+            <i class="fas fa-users"></i> Usuarios
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/login">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </a>
+        </li>
+      </ul>
+    </div>
   </nav>
-</header>
 
-<!-- El contenido de las rutas se inyectará aquí -->
-<router-outlet></router-outlet>
+  <!-- Contenedor donde se renderizan los componentes según las rutas -->
+  <router-outlet></router-outlet>
+</div>
 
-<footer class="text-center mt-4">
-  <p>© 2025 Taller de Motos. Todos los derechos reservados.</p>
-</footer>
+<!-- Agregar los scripts de Bootstrap al final del archivo HTML -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>

@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Producto } from '../../models/producto.model';
 import { ProductoService } from '../../services/producto.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router'; // Asegúrate de importar RouterModule
 
 @Component({
   selector: 'app-producto',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule], // Importamos RouterModule
   templateUrl: './productos.component.html',
   styleUrls: ['./productos.component.css'],
 })
@@ -19,7 +19,7 @@ export class ProductoComponent implements OnInit {
 
   constructor(
     private productoService: ProductoService,
-    private router: Router // Inyectamos el servicio de Router para navegar
+    @Inject(Router) private router: Router // Usamos @Inject aquí
   ) {}
 
   ngOnInit(): void {

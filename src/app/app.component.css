@@ -1,1 +1,17 @@
+/* app.component.css */
+body {
+  font-family: Arial, sans-serif;
+}
 
+.navbar-brand {
+  font-weight: bold;
+}
+
+.nav-link {
+  font-size: 1.1rem;
+  padding: 10px 20px;
+}
+
+.navbar-nav {
+  font-size: 1.1rem;
+}

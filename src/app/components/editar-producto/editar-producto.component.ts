@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductoService } from '../../services/producto.service';
 import { Producto } from '../../models/producto.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-editar-producto',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './editar-producto.component.html',
   styleUrls: ['./editar-producto.component.css'],
 })
