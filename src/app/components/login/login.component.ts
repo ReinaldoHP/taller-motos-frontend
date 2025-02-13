@@ -1,51 +1,78 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, signal } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { LoginResponse } from '../../models/auth.models';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  loginForm: FormGroup; // Define la forma del formulario
-  errorMessage: string = '';
+  loginForm!: FormGroup;
+  errorMessage = signal(''); // Usamos signals para manejar estados reactivos
+  isLoading = signal(false); // Indicador de carga
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
   ) {
-    // Inicializa el formulario con validaciones
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]], // Validaciones para el correo electrónico
-      password: ['', [Validators.required, Validators.minLength(6)]], // Validaciones para la contraseña
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
-  // Método para iniciar sesión
+  /**
+   * Método para manejar el envío del formulario de inicio de sesión.
+   */
   login(): void {
     if (this.loginForm.invalid) {
-      this.errorMessage = 'Por favor, complete todos los campos correctamente.';
+      this.errorMessage.set(
+        'Por favor, complete todos los campos correctamente.'
+      );
       return;
     }
 
+    this.isLoading.set(true);
     const loginData = this.loginForm.value;
 
-    this.authService.login(loginData).subscribe(
-      (response) => {
-        // Al iniciar sesión exitosamente, redirigir a la página de inicio o dashboard
-        this.router.navigate(['/dashboard']);
+    this.authService.login(loginData).subscribe({
+      next: (response: LoginResponse) => {
+        this.isLoading.set(false);
+        console.log('Inicio de sesión exitoso:', response);
+
+        // Redirige al usuario a la página de productos
+        this.router.navigate(['/productos']).then(() => {
+          console.log('Redirigiendo a /productos');
+        });
       },
-      (error) => {
-        // Si ocurre un error, mostrar el mensaje correspondiente
-        this.errorMessage = 'Credenciales incorrectas, intente nuevamente.';
-      }
-    );
+      error: (error) => {
+        this.isLoading.set(false);
+        console.error('Error en el inicio de sesión:', error);
+        this.errorMessage.set(
+          error.message || 'Credenciales incorrectas. Inténtalo de nuevo.'
+        );
+      },
+    });
+  }
+
+  /**
+   * Verifica si un campo específico del formulario es inválido y ha sido tocado.
+   * @param fieldName - Nombre del campo a verificar.
+   * @returns `true` si el campo es inválido y ha sido tocado, `false` en caso contrario.
+   */
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.loginForm.get(fieldName);
+    return (field?.invalid && field?.touched) ?? false;
   }
 }

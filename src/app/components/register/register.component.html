@@ -1,0 +1,73 @@
+<form [formGroup]="registerForm" (ngSubmit)="register()" class="p-4 border rounded shadow-sm bg-white">
+  <!-- Campo de Nombre -->
+  <div class="mb-3">
+    <label for="name" class="form-label">Nombre</label>
+    <div class="input-group">
+      <span class="input-group-text"><i class="fas fa-user"></i></span>
+      <input
+        type="text"
+        id="name"
+        formControlName="name"
+        class="form-control"
+        [class.is-invalid]="isFieldInvalid('name')"
+      />
+    </div>
+    <div *ngIf="isFieldInvalid('name')" class="invalid-feedback">
+      <span *ngIf="registerForm.get('name')?.hasError('required')">El nombre es obligatorio.</span>
+      <span *ngIf="registerForm.get('name')?.hasError('maxlength')">El nombre no puede tener más de 255 caracteres.</span>
+    </div>
+  </div>
+
+  <!-- Campo de Correo Electrónico -->
+  <div class="mb-3">
+    <label for="email" class="form-label">Correo Electrónico</label>
+    <div class="input-group">
+      <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        class="form-control"
+        [class.is-invalid]="isFieldInvalid('email')"
+      />
+    </div>
+    <div *ngIf="isFieldInvalid('email')" class="invalid-feedback">
+      <span *ngIf="registerForm.get('email')?.hasError('required')">El correo electrónico es obligatorio.</span>
+      <span *ngIf="registerForm.get('email')?.hasError('email')">Debe ser un correo electrónico válido.</span>
+    </div>
+  </div>
+
+  <!-- Campo de Contraseña -->
+  <div class="mb-3">
+    <label for="password" class="form-label">Contraseña</label>
+    <div class="input-group">
+      <span class="input-group-text"><i class="fas fa-lock"></i></span>
+      <input
+        type="password"
+        id="password"
+        formControlName="password"
+        class="form-control"
+        [class.is-invalid]="isFieldInvalid('password')"
+      />
+    </div>
+    <div *ngIf="isFieldInvalid('password')" class="invalid-feedback">
+      <span *ngIf="registerForm.get('password')?.hasError('required')">La contraseña es obligatoria.</span>
+      <span *ngIf="registerForm.get('password')?.hasError('minlength')">La contraseña debe tener al menos 6 caracteres.</span>
+    </div>
+  </div>
+
+  <!-- Botón de Envío -->
+  <button type="submit" class="btn btn-primary w-100" [disabled]="registerForm.invalid">
+    <i class="fas fa-user-plus"></i> Registrarse
+  </button>
+
+  <!-- Mensaje de Error Global -->
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Enlace de Inicio de Sesión -->
+  <p class="mt-3 text-center">
+    ¿Ya tienes cuenta? <a routerLink="/login" class="text-primary">Inicia sesión aquí</a>
+  </p>
+</form>
