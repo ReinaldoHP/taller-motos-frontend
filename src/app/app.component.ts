@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  [x: string]: any;
   title = 'Taller de Motos Reinaldo';
   isAuthenticated = signal(false); // Estado de autenticación
 
@@ -27,10 +28,13 @@ export class AppComponent {
       next: () => {
         this.isAuthenticated.set(false); // Actualiza el estado de autenticación
         console.log('Sesión cerrada correctamente.');
+        this['router'].navigate(['/home']); // Redirige al usuario a /home
       },
       error: (error) => {
         console.error('Error al cerrar sesión:', error);
       },
     });
   }
+
+
 }

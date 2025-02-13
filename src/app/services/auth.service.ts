@@ -13,7 +13,7 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: Object // Inyecta PLATFORM_ID
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   /**
@@ -70,23 +70,11 @@ export class AuthService {
       .pipe(
         tap((response) => {
           if (response.token) {
-            this.saveToken(response.token); // Usa el método centralizado para guardar el token
+            this.saveToken(response.token); // Guarda el token en localStorage
             console.log('Token guardado:', response.token);
           }
         })
       );
-  }
-
-  /**
-   * Verifica si el usuario está autenticado.
-   */
-  isAuthenticated(): boolean {
-    if (!isPlatformBrowser(this.platformId)) {
-      return false; // Si no estamos en el navegador, retorna `false`
-    }
-
-    const token = this.getToken(); // Usa el método centralizado para obtener el token
-    return !!token; // Retorna `true` si el token existe, `false` en caso contrario
   }
 
   /**
@@ -100,10 +88,22 @@ export class AuthService {
 
     return this.http.post(`${this.apiUrl}/logout`, null, { headers }).pipe(
       tap(() => {
-        this.removeToken(); // Usa el método centralizado para eliminar el token
+        this.removeToken(); // Elimina el token del almacenamiento local
         console.log('Sesión cerrada correctamente.');
       })
     );
+  }
+
+  /**
+   * Verifica si el usuario está autenticado.
+   */
+  isAuthenticated(): boolean {
+    if (!isPlatformBrowser(this.platformId)) {
+      return false; // Si no estamos en el navegador, retorna `false`
+    }
+
+    const token = this.getToken(); // Usa el método centralizado para obtener el token
+    return !!token; // Retorna `true` si el token existe, `false` en caso contrario
   }
 
   /**

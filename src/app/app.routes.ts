@@ -1,57 +1,63 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { authGuard } from './guards/auth.guard'; // Importa el guardia de autenticación
-import { ProductoComponent } from './components/productos/productos.component'; // Componente de productos
-import { LoginComponent } from './components/login/login.component'; // Componente de inicio de sesión
-import { RegisterComponent } from './components/register/register.component'; // Componente de registro
-import { HomeComponent } from './components/home/home.component'; // Componente de página principal
-import { CrearProductoComponent } from './components/crear-producto/crear-producto.component'; // Componente para crear productos
-import { EditarProductoComponent } from './components/editar-producto/editar-producto.component'; // Componente para editar productos
-import { DetalleProductoComponent } from './components/detalle-producto/detalle-producto.component'; // Componente para detalles de productos
+import { Routes } from '@angular/router';
+import { HomeComponent } from './components/home/home.component';
+import { ProductoComponent } from './components/productos/productos.component';
+import { DetalleProductoComponent } from './components/detalle-producto/detalle-producto.component';
+import { CrearProductoComponent } from './components/crear-producto/crear-producto.component';
+import { EditarProductoComponent } from './components/editar-producto/editar-producto.component';
+import { UserComponent } from './components/user/user.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  // Ruta raíz: Redirige al inicio de sesión por defecto
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  // Redirige al home por defecto
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
 
-  // Rutas públicas accesibles para todos los usuarios
-  { path: 'login', component: LoginComponent }, // Página de inicio de sesión
-  { path: 'registro', component: RegisterComponent }, // Página de registro
+  // Ruta para la página de inicio
+  {
+    path: 'home',
+    component: HomeComponent,
+  },
 
-  // Rutas protegidas (requieren autenticación)
+  // Ruta para iniciar sesión
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+
+  // Ruta para registrarse
+  {
+    path: 'registro',
+    component: RegisterComponent,
+  },
+
+  // Rutas protegidas que requieren autenticación
   {
     path: 'productos',
     component: ProductoComponent,
-    canActivate: [authGuard], // Protege esta ruta con el guardia de autenticación
+    canActivate: [authGuard],
   },
   {
     path: 'productos/:id',
     component: DetalleProductoComponent,
-    canActivate: [authGuard], // Protege esta ruta
+    canActivate: [authGuard],
   },
   {
     path: 'crear-producto',
     component: CrearProductoComponent,
-    canActivate: [authGuard], // Protege esta ruta
+    canActivate: [authGuard],
   },
   {
     path: 'actualizar-producto/:id',
     component: EditarProductoComponent,
-    canActivate: [authGuard], // Protege esta ruta
+    canActivate: [authGuard],
   },
-
-  // Ruta de la página principal (protegida)
   {
-    path: 'home',
-    component: HomeComponent,
-    canActivate: [authGuard], // Protege esta ruta
+    path: 'usuarios',
+    component: UserComponent,
+    canActivate: [authGuard],
   },
 
-  // Ruta comodín para manejar rutas no válidas
-  { path: '**', redirectTo: '/login' }, // Redirige a la página de inicio de sesión si la ruta no existe
+  // Ruta comodín para redirigir a /home si la ruta no existe
+  { path: '**', redirectTo: '/home' },
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)], // Configura las rutas principales
-  exports: [RouterModule], // Exporta el módulo para que pueda ser utilizado en otros lugares
-})
-export class AppRoutingModule {}
