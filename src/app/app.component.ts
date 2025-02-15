@@ -26,9 +26,9 @@ export class AppComponent {
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {
-        this.isAuthenticated.set(false); // Actualiza el estado de autenticación
+        this.isAuthenticated.set(false);
         console.log('Sesión cerrada correctamente.');
-        this['router'].navigate(['/home']); // Redirige al usuario a /home
+        this['router'].navigate(['/home']);
       },
       error: (error) => {
         console.error('Error al cerrar sesión:', error);

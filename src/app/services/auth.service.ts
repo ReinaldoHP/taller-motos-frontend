@@ -29,10 +29,9 @@ export class AuthService {
    * Obtiene el token JWT del almacenamiento local.
    */
   getToken(): string | null {
-    if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem('authToken');
-    }
-    return null;
+    return isPlatformBrowser(this.platformId)
+      ? localStorage.getItem('authToken')
+      : null;
   }
 
   /**
@@ -98,12 +97,7 @@ export class AuthService {
    * Verifica si el usuario está autenticado.
    */
   isAuthenticated(): boolean {
-    if (!isPlatformBrowser(this.platformId)) {
-      return false; // Si no estamos en el navegador, retorna `false`
-    }
-
-    const token = this.getToken(); // Usa el método centralizado para obtener el token
-    return !!token; // Retorna `true` si el token existe, `false` en caso contrario
+    return !!this.getToken(); // Retorna `true` si el token existe, `false` en caso contrario
   }
 
   /**

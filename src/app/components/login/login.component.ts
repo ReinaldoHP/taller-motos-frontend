@@ -1,18 +1,14 @@
 import { Component, signal } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { LoginResponse } from '../../models/auth.models';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule], // No necesitas FormsModule si usas Reactive Forms
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
@@ -33,35 +29,36 @@ export class LoginComponent {
   }
 
   /**
-   * Método para manejar el envío del formulario de inicio de sesión.
+   * Inicia sesión con las credenciales proporcionadas.
    */
   login(): void {
     if (this.loginForm.invalid) {
       this.errorMessage.set(
-        'Por favor, complete todos los campos correctamente.'
+        'Por favor, completa todos los campos correctamente.'
       );
       return;
     }
 
     this.isLoading.set(true);
-    const loginData = this.loginForm.value;
+    const credentials = this.loginForm.value;
 
-    this.authService.login(loginData).subscribe({
-      next: (response: LoginResponse) => {
-        this.isLoading.set(false);
-        console.log('Inicio de sesión exitoso:', response);
+    this.authService.login(credentials).subscribe({
+      next: (response: any) => {
+        if (response.token) {
+          // Almacenar el token en localStorage
+          localStorage.setItem('authToken', response.token);
 
-        // Redirige al usuario a la página de productos
-        this.router.navigate(['/productos']).then(() => {
-          console.log('Redirigiendo a /productos');
-        });
+          // Redirigir al usuario a la página principal
+          this.router.navigate(['/productos']);
+        } else {
+          this.errorMessage.set('Error al iniciar sesión.');
+        }
       },
-      error: (error) => {
-        this.isLoading.set(false);
-        console.error('Error en el inicio de sesión:', error);
-        this.errorMessage.set(
-          error.message || 'Credenciales incorrectas. Inténtalo de nuevo.'
-        );
+      error: () => {
+        this.errorMessage.set('Error al iniciar sesión. Inténtalo más tarde.');
+      },
+      complete: () => {
+        this.isLoading.set(false); // Desactivar estado de carga
       },
     });
   }

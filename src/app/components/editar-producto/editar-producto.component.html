@@ -1,7 +1,8 @@
-<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center vh-100">
-  <div class="spinner-border text-primary" role="status">
+<div *ngIf="isLoading" class="d-flex flex-column justify-content-center align-items-center vh-100">
+  <div class="spinner-border text-primary mb-3" role="status">
     <span class="visually-hidden">Cargando...</span>
   </div>
+  <p class="text-muted">Cargando producto...</p>
 </div>
 
 <div class="container mt-5" *ngIf="!isLoading">
@@ -62,22 +63,24 @@
               <div class="invalid-feedback">La cantidad debe ser mayor o igual a 1.</div>
             </div>
 
-            <!-- Código de Barra -->
+            <!-- Código de Barras -->
             <div class="mb-3">
-              <label for="codigo_barra" class="form-label">Código de Barra:</label>
+              <label for="codigo_barra" class="form-label">Código de Barras:</label>
               <input
                 id="codigo_barra"
                 formControlName="codigo_barra"
                 type="text"
                 class="form-control"
-                [ngClass]="{'is-invalid': productoForm.get('codigo_barra')?.invalid && productoForm.get('codigo_barra')?.touched}"
               />
-              <div class="invalid-feedback">El código de barra es obligatorio.</div>
             </div>
 
             <!-- Botón -->
             <div class="text-center">
-              <button type="submit" class="btn btn-primary w-100" [disabled]="productoForm.invalid">
+              <button
+                type="submit"
+                class="btn btn-primary w-50"
+                [disabled]="productoForm.invalid"
+              >
                 Guardar cambios
               </button>
             </div>

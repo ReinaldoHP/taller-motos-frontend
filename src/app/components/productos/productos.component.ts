@@ -7,7 +7,7 @@ import { Router, RouterModule } from '@angular/router';
 @Component({
   selector: 'app-producto',
   standalone: true,
-  imports: [CommonModule, RouterModule], // Importamos RouterModule
+  imports: [CommonModule, RouterModule],
   templateUrl: './productos.component.html',
   styleUrls: ['./productos.component.css'],
 })
@@ -39,7 +39,8 @@ export class ProductoComponent implements OnInit {
         this.productos = data;
         this.isLoading = false;
       },
-      error: () => {
+      error: (error) => {
+        console.error('Error al cargar los productos:', error);
         this.errorMessage =
           'Error al cargar los productos. Inténtalo más tarde.';
         this.isLoading = false;
@@ -50,7 +51,13 @@ export class ProductoComponent implements OnInit {
   /**
    * Eliminar un producto con confirmación.
    */
-  deleteProducto(id: string): void {
+  deleteProducto(id: string | undefined): void {
+    if (!id) {
+      console.error('ID del producto no definido.');
+      this.errorMessage = 'Error: ID del producto no definido.';
+      return;
+    }
+
     if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
       this.productoService.deleteProducto(id).subscribe({
         next: () => {
@@ -60,7 +67,8 @@ export class ProductoComponent implements OnInit {
           this.successMessage = 'Producto eliminado correctamente.';
           this.clearMessagesAfterTimeout();
         },
-        error: () => {
+        error: (error) => {
+          console.error('Error al eliminar el producto:', error);
           this.errorMessage = 'Error al eliminar el producto.';
           this.clearMessagesAfterTimeout();
         },
@@ -72,6 +80,12 @@ export class ProductoComponent implements OnInit {
    * Redirigir al formulario de actualización con el ID del producto.
    */
   updateProducto(id: string): void {
+    if (!id) {
+      console.error('ID del producto no definido.');
+      this.errorMessage = 'Error: ID del producto no definido.';
+      return;
+    }
+
     this.router.navigate(['/actualizar-producto', id]);
   }
 

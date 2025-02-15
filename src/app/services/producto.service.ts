@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from './api.service';
-import { Producto } from '../models/producto.model';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { Producto } from '../models/producto.model';
 
 @Injectable({
   providedIn: 'root',
@@ -9,30 +10,37 @@ import { Observable } from 'rxjs';
 export class ProductoService {
   private endpoint = 'productos';
 
-  constructor(private apiService: ApiService) {}
+  constructor(private http: HttpClient) {}
 
-  // Obtener todos los productos
   getProductos(): Observable<Producto[]> {
-    return this.apiService.get<Producto[]>(this.endpoint);
+    return this.http.get<Producto[]>(
+      `${environment.apiBaseUrl}/${this.endpoint}`
+    );
   }
 
-  // Obtener un producto por su ID
   getProductoById(id: string): Observable<Producto> {
-    return this.apiService.get<Producto>(`${this.endpoint}/${id}`);
+    return this.http.get<Producto>(
+      `${environment.apiBaseUrl}/${this.endpoint}/${id}`
+    );
   }
 
-  // Crear un nuevo producto
-  createProducto(producto: Producto): Observable<Producto> {
-    return this.apiService.post<Producto>(this.endpoint, producto);
+  createProducto(producto: Producto): Observable<any> {
+    return this.http.post(
+      `${environment.apiBaseUrl}/${this.endpoint}`,
+      producto
+    );
   }
 
-  // Actualizar un producto existente
-  updateProducto(id: string, producto: Producto): Observable<Producto> {
-    return this.apiService.put<Producto>(`${this.endpoint}/${id}`, producto);
+  updateProducto(id: string, producto: Producto): Observable<any> {
+    return this.http.put(
+      `${environment.apiBaseUrl}/${this.endpoint}/${id}`,
+      producto
+    );
   }
 
-  // Eliminar un producto
   deleteProducto(id: string): Observable<void> {
-    return this.apiService.delete(`${this.endpoint}/${id}`);
+    return this.http.delete<void>(
+      `${environment.apiBaseUrl}/${this.endpoint}/${id}`
+    );
   }
 }

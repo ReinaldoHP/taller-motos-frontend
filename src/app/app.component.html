@@ -5,7 +5,6 @@
       <i class="bi bi-tools me-2 text-primary"></i>
       <span class="fw-bold text-primary">{{ title }}</span>
     </a>
-
     <!-- Botón de Colapso para Dispositivos Móviles -->
     <button
       class="navbar-toggler"
@@ -18,30 +17,40 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-
     <!-- Menú de Navegación -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <!-- Opciones para Usuarios No Autenticados -->
         <li class="nav-item" *ngIf="!isAuthenticated()">
-          <a class="nav-link" routerLink="/login">
+          <a
+            class="nav-link btn btn-outline-primary rounded-pill px-3 py-2 me-2"
+            routerLink="/login"
+          >
             <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar Sesión
           </a>
         </li>
         <li class="nav-item" *ngIf="!isAuthenticated()">
-          <a class="nav-link" routerLink="/register">
+          <a
+            class="nav-link btn btn-outline-success rounded-pill px-3 py-2"
+            routerLink="/registro"
+          >
             <i class="bi bi-person-plus me-1"></i> Registrarse
           </a>
         </li>
-
         <!-- Opciones para Usuarios Autenticados -->
         <li class="nav-item" *ngIf="isAuthenticated()">
-          <a class="nav-link" routerLink="/productos">
+          <a
+            class="nav-link btn btn-outline-info rounded-pill px-3 py-2 me-2"
+            routerLink="/productos"
+          >
             <i class="bi bi-box-seam me-1"></i> Productos
           </a>
         </li>
         <li class="nav-item" *ngIf="isAuthenticated()">
-          <a class="nav-link cursor-pointer" (click)="logout()">
+          <a
+            class="nav-link btn btn-outline-danger rounded-pill px-3 py-2"
+            (click)="logout()"
+          >
             <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
           </a>
         </li>
@@ -49,6 +58,5 @@
     </div>
   </div>
 </nav>
-
 <!-- Contenido Principal -->
 <router-outlet></router-outlet>

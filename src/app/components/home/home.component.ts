@@ -1,21 +1,27 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [], // Asegúrate de importar CommonModule si usas directivas como *ngIf
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
-  router: any;
+  constructor(private router: Router) {}
 
-  // Método para navegar a la página de registro
+  /**
+   * Navega a la página de registro.
+   */
   navigateToRegister(): void {
     this.router.navigate(['/register']);
   }
 
-  openRegisterModal() {
-    throw new Error('Method not implemented.');
+  /**
+   * Abre un modal de registro (si se implementa en el futuro).
+   */
+  openRegisterModal(): void {
+    console.warn('El método openRegisterModal aún no está implementado.');
   }
 }

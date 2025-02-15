@@ -1,80 +1,106 @@
-<div class="container mt-4">
-  <h2>Crear Nuevo Producto</h2>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg">
+        <div class="card-body">
+          <!-- Título -->
+          <h2 class="text-center mb-4">Crear Producto</h2>
 
-  <!-- Mensaje de éxito -->
-  <div *ngIf="successMessage" class="alert alert-success">
-    {{ successMessage }}
+          <!-- Formulario -->
+          <form [formGroup]="productoForm" (ngSubmit)="onSubmit()" novalidate>
+            <!-- Campo Nombre -->
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre:</label>
+              <input
+                id="nombre"
+                formControlName="nombre"
+                type="text"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': isInvalid('nombre') }"
+                placeholder="Ingresa el nombre del producto"
+              />
+              <div *ngIf="isInvalid('nombre')" class="invalid-feedback">
+                El nombre es obligatorio.
+              </div>
+            </div>
+
+            <!-- Campo Descripción -->
+            <div class="mb-3">
+              <label for="descripcion" class="form-label">Descripción:</label>
+              <textarea
+                id="descripcion"
+                formControlName="descripcion"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': isInvalid('descripcion') }"
+                placeholder="Ingresa una descripción del producto"
+              ></textarea>
+              <div *ngIf="isInvalid('descripcion')" class="invalid-feedback">
+                La descripción es obligatoria.
+              </div>
+            </div>
+
+            <!-- Campo Precio -->
+            <div class="mb-3">
+              <label for="precio" class="form-label">Precio:</label>
+              <input
+                id="precio"
+                formControlName="precio"
+                type="number"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': isInvalid('precio') }"
+                placeholder="Ingresa el precio del producto"
+              />
+              <div *ngIf="isInvalid('precio')" class="invalid-feedback">
+                El precio debe ser mayor o igual a 0.
+              </div>
+            </div>
+
+            <!-- Campo Cantidad -->
+            <div class="mb-3">
+              <label for="cantidad" class="form-label">Cantidad:</label>
+              <input
+                id="cantidad"
+                formControlName="cantidad"
+                type="number"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': isInvalid('cantidad') }"
+                placeholder="Ingresa la cantidad disponible"
+              />
+              <div *ngIf="isInvalid('cantidad')" class="invalid-feedback">
+                La cantidad debe ser mayor o igual a 1.
+              </div>
+            </div>
+
+            <!-- Campo Código de Barras -->
+            <div class="mb-3">
+              <label for="codigo_barra" class="form-label">Código de Barras:</label>
+              <input
+                id="codigo_barra"
+                formControlName="codigo_barra"
+                type="text"
+                class="form-control"
+                placeholder="Opcional: Ingresa el código de barras"
+              />
+            </div>
+
+            <!-- Botón de Envío -->
+            <div class="text-center">
+              <button
+                type="submit"
+                class="btn btn-primary w-100"
+                [disabled]="productoForm.invalid || isLoading"
+              >
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                Crear Producto
+              </button>
+            </div>
+          </form>
+
+          <!-- Mensajes de Éxito y Error -->
+          <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+          <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <!-- Mensaje de error -->
-  <div *ngIf="errorMessage" class="alert alert-danger">
-    {{ errorMessage }}
-  </div>
-
-  <!-- Formulario de creación del producto -->
-  <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="nombre">Nombre</label>
-      <input
-        type="text"
-        class="form-control"
-        id="nombre"
-        formControlName="nombre"
-        placeholder="Nombre del producto"
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="descripcion">Descripción</label>
-      <textarea
-        class="form-control"
-        id="descripcion"
-        formControlName="descripcion"
-        placeholder="Descripción del producto"
-      ></textarea>
-    </div>
-
-    <div class="form-group">
-      <label for="precio">Precio</label>
-      <input
-        type="number"
-        class="form-control"
-        id="precio"
-        formControlName="precio"
-        placeholder="Precio del producto"
-        min="0"
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="cantidad">Cantidad</label>
-      <input
-        type="number"
-        class="form-control"
-        id="cantidad"
-        formControlName="cantidad"
-        placeholder="Cantidad disponible"
-        min="1"
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="codigo_barra">Código de Barra</label>
-      <input
-        type="text"
-        class="form-control"
-        id="codigo_barra"
-        formControlName="codigo_barra"
-        placeholder="Código de barra del producto"
-      />
-    </div>
-
-    <button
-      type="submit"
-      class="btn btn-primary"
-      [disabled]="productoForm.invalid || isLoading"
-    >
-      {{ isLoading ? 'Guardando...' : 'Crear Producto' }}
-    </button>
-  </form>
 </div>
