@@ -8,6 +8,7 @@ import { UserComponent } from './components/user/user.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { authGuard } from './guards/auth.guard';
+import { UserListComponent } from './components/user-list/user-list.component';
 
 export const routes: Routes = [
   // Redirige al home por defecto
@@ -52,8 +53,20 @@ export const routes: Routes = [
     component: EditarProductoComponent,
     canActivate: [authGuard],
   },
+
+  // Rutas para usuarios
   {
-    path: 'usuarios',
+    path: 'usuarios', // Lista de usuarios
+    component: UserListComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'usuario/crear', // Crear un nuevo usuario
+    component: UserComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'usuario/editar/:id', // Editar un usuario existente
     component: UserComponent,
     canActivate: [authGuard],
   },

@@ -1,49 +1,56 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from '../models/auth.models';
 import { environment } from '../../environments/environment';
+import { User } from '../models/auth.models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = `${environment.apiBaseUrl}/users`; // URL base del endpoint de usuarios
+  private endpoint = 'users'; // Endpoint para usuarios en el backend
 
   constructor(private http: HttpClient) {}
 
   /**
-   * Obtener todos los usuarios
+   * Obtiene la lista de todos los usuarios.
    */
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiUrl);
+    return this.http.get<User[]>(`${environment.apiBaseUrl}/${this.endpoint}`);
   }
 
   /**
-   * Obtener un usuario por ID
+   * Obtiene un usuario específico por su ID.
    */
   getUserById(id: number): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/${id}`);
+    return this.http.get<User>(
+      `${environment.apiBaseUrl}/${this.endpoint}/${id}`
+    );
   }
 
   /**
-   * Crear un nuevo usuario
+   * Crea un nuevo usuario.
    */
-  createUser(userData: Partial<User>): Observable<User> {
-    return this.http.post<User>(this.apiUrl, userData);
+  createUser(user: Partial<User>): Observable<any> {
+    return this.http.post(`${environment.apiBaseUrl}/${this.endpoint}`, user);
   }
 
   /**
-   * Actualizar un usuario existente
+   * Actualiza un usuario existente.
    */
-  updateUser(id: number, userData: Partial<User>): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/${id}`, userData);
+  updateUser(id: number, user: Partial<User>): Observable<any> {
+    return this.http.put(
+      `${environment.apiBaseUrl}/${this.endpoint}/${id}`,
+      user
+    );
   }
 
   /**
-   * Eliminar un usuario
+   * Elimina un usuario por su ID.
    */
   deleteUser(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(
+      `${environment.apiBaseUrl}/${this.endpoint}/${id}`
+    );
   }
 }

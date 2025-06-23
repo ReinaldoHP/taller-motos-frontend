@@ -1,0 +1,52 @@
+<div class="container mt-5">
+  <h2 class="fw-bold text-primary">Lista de Usuarios</h2>
+
+  <!-- Mensajes -->
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+
+  <!-- Spinner de carga -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+
+  <!-- Tabla de usuarios -->
+  <table class="table table-hover shadow-sm" *ngIf="!isLoading && users.length > 0">
+    <thead class="table-light">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <button
+            class="btn btn-sm btn-warning me-2"
+            (click)="updateUser(user.id!)"
+          >
+            <i class="bi bi-pencil-square me-1"></i> Editar
+          </button>
+          <button
+            class="btn btn-sm btn-danger"
+            (click)="deleteUser(user.id!)"
+          >
+            <i class="bi bi-trash me-1"></i> Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Mensaje cuando no hay usuarios -->
+  <div *ngIf="!isLoading && users.length === 0" class="text-center py-5">
+    <p class="text-muted fst-italic">No hay usuarios registrados.</p>
+  </div>
+</div>

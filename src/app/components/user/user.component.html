@@ -1,67 +1,45 @@
-<div class="container">
+<div class="container mt-5">
+  <h2 class="fw-bold text-primary">{{ isEditing ? 'Editar Usuario' : 'Crear Usuario' }}</h2>
+
   <!-- Mensajes -->
-  <div *ngIf="successMessage" class="alert alert-success">
-    {{ successMessage }}
-  </div>
-  <div *ngIf="errorMessage" class="alert alert-danger">
-    {{ errorMessage }}
-  </div>
+  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
 
-  <!-- Formulario para crear/editar usuarios -->
-  <form [formGroup]="userForm" (ngSubmit)="saveUser()">
-    <div class="form-group">
-      <label for="name">Nombre:</label>
-      <input type="text" id="name" formControlName="name" class="form-control" />
-      <div *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched" class="invalid-feedback">
-        El nombre es obligatorio y debe tener al menos 3 caracteres.
+  <!-- Formulario -->
+  <form [formGroup]="userForm" (ngSubmit)="saveUser()" class="mb-4">
+    <div class="row g-3">
+      <!-- Nombre -->
+      <div class="col-md-6">
+        <label for="name" class="form-label">Nombre</label>
+        <input id="name" formControlName="name" type="text" class="form-control" placeholder="Ingresa el nombre" />
+        <small class="text-danger" *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched">
+          El nombre es requerido y debe tener al menos 3 caracteres.
+        </small>
+      </div>
+
+      <!-- Email -->
+      <div class="col-md-6">
+        <label for="email" class="form-label">Email</label>
+        <input id="email" formControlName="email" type="email" class="form-control" placeholder="Ingresa el email" />
+        <small class="text-danger" *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+          El email es requerido y debe ser válido.
+        </small>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="col-md-6">
+        <label for="password" class="form-label">Contraseña</label>
+        <input id="password" formControlName="password" type="password" class="form-control" placeholder="Ingresa la contraseña" />
+        <small class="text-danger" *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+          La contraseña es requerida y debe tener al menos 6 caracteres.
+        </small>
+      </div>
+
+      <!-- Botones -->
+      <div class="col-12 d-flex gap-3">
+        <button type="submit" class="btn btn-primary">{{ isEditing ? 'Actualizar Usuario' : 'Crear Usuario' }}</button>
+        <button type="button" class="btn btn-secondary" (click)="resetForm()">Cancelar</button>
       </div>
     </div>
-
-    <div class="form-group">
-      <label for="email">Correo electrónico:</label>
-      <input type="email" id="email" formControlName="email" class="form-control" />
-      <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" class="invalid-feedback">
-        Ingresa un correo electrónico válido.
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="password">Contraseña:</label>
-      <input type="password" id="password" formControlName="password" class="form-control" />
-      <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched" class="invalid-feedback">
-        La contraseña es obligatoria al crear un usuario.
-      </div>
-    </div>
-
-    <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid || isLoading">
-      {{ isEditing ? 'Actualizar Usuario' : 'Crear Usuario' }}
-    </button>
-    <button type="button" class="btn btn-secondary" (click)="resetForm()">Cancelar</button>
   </form>
-
-  <hr />
-
-  <!-- Lista de usuarios -->
-  <h2>Usuarios</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Correo</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of users">
-        <td>{{ user.id }}</td>
-        <td>{{ user.name }}</td>
-        <td>{{ user.email }}</td>
-        <td>
-          <button class="btn btn-info" (click)="editUser(user)">Editar</button>
-          <button class="btn btn-danger" (click)="deleteUser(user.id!)">Eliminar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
 </div>
