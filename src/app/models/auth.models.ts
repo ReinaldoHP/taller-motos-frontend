@@ -1,4 +1,10 @@
 // Interfaz para el usuario
+
+export interface Role {
+  id: number;
+  nombre: string;
+  slug: string;
+}
 export interface User {
   id?: number;
   name: string;
@@ -7,6 +13,7 @@ export interface User {
   email_verified_at?: string; // Opcional (solo si el backend lo incluye)
   created_at?: string; // Opcional (solo si el backend lo incluye)
   updated_at?: string; // Opcional (solo si el backend lo incluye)
+  roles?: { id: number; nombre: string }[];
 }
 
 // Interfaz para la respuesta de inicio de sesión

@@ -27,6 +27,7 @@ export class RegisterComponent {
       name: ['', [Validators.required, Validators.maxLength(255)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+      role: ['administrador'],
     });
   }
 

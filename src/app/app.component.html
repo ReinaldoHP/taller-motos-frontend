@@ -27,6 +27,8 @@
           <a
             class="nav-link btn btn-outline-primary rounded-pill px-3 py-2 me-2"
             routerLink="/login"
+            title="Iniciar Sesión"
+            aria-label="Iniciar Sesión"
           >
             <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar Sesión
           </a>
@@ -35,6 +37,8 @@
           <a
             class="nav-link btn btn-outline-success rounded-pill px-3 py-2"
             routerLink="/registro"
+            title="Registrarse"
+            aria-label="Registrarse"
           >
             <i class="bi bi-person-plus me-1"></i> Registrarse
           </a>
@@ -45,6 +49,8 @@
           <a
             class="nav-link btn btn-outline-info rounded-pill px-3 py-2 me-2"
             routerLink="/productos"
+            title="Productos"
+            aria-label="Productos"
           >
             <i class="bi bi-box-seam me-1"></i> Productos
           </a>
@@ -53,15 +59,33 @@
           <a
             class="nav-link btn btn-outline-info rounded-pill px-3 py-2 me-2"
             routerLink="/usuarios"
+            title="Lista de Usuarios"
+            aria-label="Lista de Usuarios"
           >
-            <i class="bi bi-people me-1"></i> Lista de Usuarios
+            <i class="bi bi-people me-1"></i> Usuarios
           </a>
         </li>
+
+        <!-- Gestión de Roles -->
+        <li class="nav-item" *ngIf="isAuthenticated()">
+          <a
+            class="nav-link btn btn-outline-warning rounded-pill px-3 py-2 me-2"
+            routerLink="/roles"
+            title="Gestión de Roles"
+            aria-label="Gestión de Roles"
+          >
+            <i class="bi bi-shield-lock me-1"></i> Roles
+          </a>
+        </li>
+
+        <!-- Cerrar Sesión -->
         <li class="nav-item" *ngIf="isAuthenticated()">
           <a
             class="nav-link btn btn-outline-danger rounded-pill px-3 py-2"
             (click)="logout()"
             style="cursor: pointer;"
+            title="Cerrar Sesión"
+            aria-label="Cerrar Sesión"
           >
             <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
           </a>

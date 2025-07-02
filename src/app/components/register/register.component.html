@@ -56,6 +56,13 @@
     </div>
   </div>
 
+  <div>
+    <label for="role">Rol:</label>
+    <select id="role" formControlName="role">
+      <option value="administrador">Administrador</option>
+    </select>
+  </div>
+
   <!-- Botón de Envío -->
   <button type="submit" class="btn btn-primary w-100" [disabled]="registerForm.invalid">
     <i class="fas fa-user-plus"></i> Registrarse

@@ -9,6 +9,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { authGuard } from './guards/auth.guard';
 import { UserListComponent } from './components/user-list/user-list.component';
+import { RoleListComponent } from './roles/role-list/role-list.component';
 
 export const routes: Routes = [
   // Redirige al home por defecto
@@ -68,6 +69,12 @@ export const routes: Routes = [
   {
     path: 'usuario/editar/:id', // Editar un usuario existente
     component: UserComponent,
+    canActivate: [authGuard],
+  },
+
+  {
+    path: 'roles',
+    component: RoleListComponent,
     canActivate: [authGuard],
   },
 

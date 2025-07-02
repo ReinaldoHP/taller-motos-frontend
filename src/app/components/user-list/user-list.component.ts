@@ -3,70 +3,69 @@ import { CommonModule } from '@angular/common';
 import { User } from '../../models/auth.models';
 import { UserService } from '../../services/user.service';
 import { Router, RouterModule } from '@angular/router';
+import { RoleService } from '../../services/role.service';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [CommonModule, RouterModule], // Importa dependencias necesarias
+  imports: [CommonModule, RouterModule],
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css'],
 })
 export class UserListComponent implements OnInit {
-  users: User[] = []; // Lista de usuarios
-  isLoading: boolean = true; // Indica si los datos están cargando
-  errorMessage: string = ''; // Mensaje de error
-  successMessage: string = ''; // Mensaje de éxito
+  users: User[] = [];
+  selectedUser: User | null = null;
+  selectedRoles: number[] = [];
+  availableRoles: { id: number; nombre: string }[] = [];
+
+  isLoading: boolean = true;
+  errorMessage: string = '';
+  successMessage: string = '';
 
   constructor(
-    private userService: UserService, // Servicio para interactuar con el backend
-    private router: Router // Para navegar entre rutas
+    private userService: UserService,
+    private roleService: RoleService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.loadUsers(); // Carga la lista de usuarios al iniciar el componente
+    this.loadUsers();
+    this.loadRoles();
   }
 
-  /**
-   * Cargar la lista de usuarios desde el servicio.
-   */
   loadUsers(): void {
     this.isLoading = true;
-    this.errorMessage = '';
-    this.successMessage = '';
-
     this.userService.getUsers().subscribe({
       next: (data: User[]) => {
-        this.users = data; // Asigna los usuarios obtenidos
+        this.users = data;
         this.isLoading = false;
       },
-      error: (error) => {
-        console.error('Error al cargar los usuarios:', error);
-        this.errorMessage =
-          'Error al cargar los usuarios. Inténtalo más tarde.';
+      error: () => {
+        this.errorMessage = 'Error al cargar los usuarios.';
         this.isLoading = false;
       },
     });
   }
 
-  /**
-   * Eliminar un usuario con confirmación.
-   */
-  deleteUser(id: number | undefined): void {
-    if (!id) {
-      console.error('ID del usuario no definido.');
-      this.errorMessage = 'Error: ID del usuario no definido.';
-      return;
-    }
+  loadRoles(): void {
+    this.roleService.getAllRoles().subscribe({
+      next: (roles) => (this.availableRoles = roles),
+      error: () => {
+        this.errorMessage = 'Error al cargar los roles.';
+      },
+    });
+  }
 
-    if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
+  deleteUser(id: number | undefined): void {
+    if (!id) return;
+    if (confirm('¿Eliminar este usuario?')) {
       this.userService.deleteUser(id).subscribe({
         next: () => {
-          this.users = this.users.filter((user) => user.id !== id); // Filtra el usuario eliminado
+          this.users = this.users.filter((user) => user.id !== id);
           this.successMessage = 'Usuario eliminado correctamente.';
           this.clearMessagesAfterTimeout();
         },
-        error: (error) => {
-          console.error('Error al eliminar el usuario:', error);
+        error: () => {
           this.errorMessage = 'Error al eliminar el usuario.';
           this.clearMessagesAfterTimeout();
         },
@@ -74,26 +73,55 @@ export class UserListComponent implements OnInit {
     }
   }
 
-  /**
-   * Redirigir al formulario de actualización con el ID del usuario.
-   */
   updateUser(id: number): void {
-    if (!id) {
-      console.error('ID del usuario no definido.');
-      this.errorMessage = 'Error: ID del usuario no definido.';
-      return;
-    }
-
-    this.router.navigate(['/usuario/editar', id]); // Navega a la ruta de edición
+    if (!id) return;
+    this.router.navigate(['/usuario/editar', id]);
   }
 
-  /**
-   * Limpiar mensajes después de un tiempo.
-   */
+  /** Abrir modal de asignar roles */
+  openRoleModal(user: User): void {
+    this.selectedUser = user;
+    this.selectedRoles = user.roles?.map((r) => r.id) || [];
+  }
+
+  /** Cerrar modal */
+  closeRoleModal(): void {
+    this.selectedUser = null;
+    this.selectedRoles = [];
+  }
+
+  /** Alternar selección de un rol */
+  toggleRole(roleId: number): void {
+    const index = this.selectedRoles.indexOf(roleId);
+    index > -1
+      ? this.selectedRoles.splice(index, 1)
+      : this.selectedRoles.push(roleId);
+  }
+
+  /** Enviar asignación de roles */
+  assignRoles(): void {
+    if (!this.selectedUser?.id) return;
+
+    this.userService
+      .assignRoles(this.selectedUser.id, this.selectedRoles)
+      .subscribe({
+        next: () => {
+          this.successMessage = 'Roles asignados correctamente.';
+          this.closeRoleModal();
+          this.loadUsers();
+          this.clearMessagesAfterTimeout();
+        },
+        error: () => {
+          this.errorMessage = 'No se pudieron asignar los roles.';
+          this.clearMessagesAfterTimeout();
+        },
+      });
+  }
+
   private clearMessagesAfterTimeout(): void {
     setTimeout(() => {
       this.errorMessage = '';
       this.successMessage = '';
-    }, 3000); // 3 segundos
+    }, 3000);
   }
 }

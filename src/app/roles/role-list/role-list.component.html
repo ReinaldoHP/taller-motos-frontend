@@ -1,0 +1,93 @@
+<div class="container mt-5">
+  <h2 class="fw-bold text-primary">Gestión de Roles</h2>
+
+  <!-- Mensajes de error / éxito -->
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="alert alert-success" role="alert">{{ successMessage }}</div>
+
+  <!-- Spinner de carga -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+
+  <!-- Formulario para crear un nuevo rol -->
+  <form [formGroup]="roleForm" (ngSubmit)="createRole()" class="row g-3 mb-4" aria-label="Formulario de creación de rol">
+    <div class="col-md-4">
+      <input
+        type="text"
+        formControlName="nombre"
+        class="form-control"
+        placeholder="Nombre del rol"
+        [class.is-invalid]="roleForm.get('nombre')?.invalid && roleForm.get('nombre')?.touched"
+        aria-label="Nombre del rol"
+      />
+    </div>
+    <div class="col-md-4">
+      <input
+        type="text"
+        formControlName="slug"
+        class="form-control"
+        placeholder="Slug (único)"
+        [class.is-invalid]="roleForm.get('slug')?.invalid && roleForm.get('slug')?.touched"
+        aria-label="Slug del rol"
+      />
+    </div>
+    <div class="col-md-4">
+      <input
+        type="text"
+        formControlName="descripcion"
+        class="form-control"
+        placeholder="Descripción (opcional)"
+        aria-label="Descripción del rol"
+      />
+    </div>
+    <div class="col-12 text-end">
+      <button
+        type="submit"
+        class="btn btn-success"
+        [disabled]="roleForm.invalid"
+        aria-label="Crear rol"
+      >
+        <i class="bi bi-plus-circle me-1" aria-hidden="true"></i> Crear Rol
+      </button>
+    </div>
+  </form>
+
+  <!-- Tabla de roles existentes -->
+  <table *ngIf="!isLoading && roles.length" class="table table-hover shadow-sm" aria-label="Tabla de roles">
+    <thead class="table-light">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Slug</th>
+        <th scope="col">Descripción</th>
+        <th scope="col" class="text-end">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let role of roles">
+        <td>{{ role.id }}</td>
+        <td>{{ role.nombre }}</td>
+        <td>{{ role.slug }}</td>
+        <td>{{ role.descripcion || '—' }}</td>
+        <td class="text-end">
+          <button
+            class="btn btn-sm btn-danger"
+            (click)="deleteRole(role.id)"
+            aria-label="Eliminar rol"
+            title="Eliminar rol"
+          >
+            <i class="bi bi-trash" aria-hidden="true"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Mensaje cuando no hay roles -->
+  <div *ngIf="!isLoading && roles.length === 0" class="text-center py-5 text-muted fst-italic">
+    No existen roles definidos.
+  </div>
+</div>

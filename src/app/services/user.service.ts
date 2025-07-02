@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { User } from '../models/auth.models';
 
@@ -16,7 +16,9 @@ export class UserService {
    * Obtiene la lista de todos los usuarios.
    */
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${environment.apiBaseUrl}/${this.endpoint}`);
+    return this.http
+      .get<{ users: User[] }>(`${environment.apiBaseUrl}/${this.endpoint}`)
+      .pipe(map((response) => response.users));
   }
 
   /**
@@ -51,6 +53,19 @@ export class UserService {
   deleteUser(id: number): Observable<void> {
     return this.http.delete<void>(
       `${environment.apiBaseUrl}/${this.endpoint}/${id}`
+    );
+  }
+
+  assignRoles(userId: number, roles: number[]): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.post(
+      `${environment.apiBaseUrl}/users/${userId}/roles`,
+      { roles },
+      { headers }
     );
   }
 }

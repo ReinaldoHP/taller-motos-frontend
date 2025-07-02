@@ -50,6 +50,7 @@ export class AuthService {
     name: string;
     email: string;
     password: string;
+    role?: string;
   }): Observable<RegisterResponse> {
     return this.http.post<RegisterResponse>(
       `${this.apiUrl}/register`,
